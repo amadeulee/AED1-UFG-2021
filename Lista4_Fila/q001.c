@@ -33,10 +33,8 @@ void iniciarFila(FILA* f){
 }
 
 int tamanhoFila(FILA* f){
-
     PONT end = f->inicio;
     int tam = 0;
-
     while(end != NULL){
         tam++;
         end = end->prox;
@@ -48,7 +46,6 @@ int tamanhoFila(FILA* f){
 void exibirFila(FILA* f){
 
     PONT end = f->inicio;
-
     printf("Fila : \" ");
     while(end != NULL){
         printf("%d %d %d \n", end->reg.horas, end->reg.minutos, end->reg.timeToDie);
@@ -77,12 +74,10 @@ void excluirElemento(FILA* f){
     if(f->inicio == NULL){
         printf("fila vazia\n");
     }
-    //*reg = f->inicio->reg;
     PONT apagar = f->inicio;
     f->inicio = f->inicio->prox;
     free(apagar);
     if(f->inicio == NULL) f->fim = NULL;
-   
 }
 
 void reinicializarFila(FILA* f) {
@@ -125,10 +120,8 @@ int numMortos(FILA* f){
         if(end == NULL){
             break;
         }
-
     }
     return mortos;
-
 }
 
 int main(){
@@ -147,21 +140,4 @@ int main(){
     printf("%d\n", quantidade);
 
     return 0;
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
