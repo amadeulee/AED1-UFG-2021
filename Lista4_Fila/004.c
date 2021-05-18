@@ -1,53 +1,55 @@
+/////////////////////////////ponto.h
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
 #include <ctype.h>
 #include <string.h>
-
+ 
 #define true 1
 #define false 0
-
+ 
 typedef int bool;
-
+ 
 typedef struct{
     int dificuldade;
 }REGISTRO;
-
+ 
 typedef struct aux{
     REGISTRO reg;
     struct aux* prox;
 }ELEMENTO;
-
+ 
 typedef ELEMENTO* PONT;
-
+ 
 typedef struct{
     PONT inicio;
     PONT fim;
 }FILA;
-
+ 
 void iniciarFila(FILA* f){
     f->inicio = NULL;
     f->fim = NULL;
 }
+ 
+void inserirElemento(FILA* f, REGISTRO reg);
+PONT buscaSequencialNaoOrd(FILA* l, int ch, PONT* ant);
+PONT buscaSequencialOrd(FILA* l, int ch, PONT* ant);
+bool inserirElemFilaord(FILA* l, REGISTRO reg);
+bool inserirElemFiladec(FILA* l, REGISTRO reg);
+void excluirElemento(FILA* f);
+void reinicializarFila(FILA* f);
+int contadorQuestoes(FILA* f, int tempo, int* pontuacaototal);
 
-void exibirFila(FILA* f){
-
-    PONT end=f->inicio;
-    printf("Fila : \" ");
-    while(end != NULL){
-        printf("%d ", end->reg.dificuldade);
-        end=end->prox;
-    } 
-    printf("\"\n");
-}
+//////////////////////  .c
 
 void inserirElemento(FILA* f, REGISTRO reg){
-
+ 
     PONT novo;
     novo = (PONT) malloc(sizeof(ELEMENTO));
     novo->reg = reg;
     novo->prox = NULL;
-
+ 
     if(f->inicio == NULL){
         f->inicio = novo;
     }else{
@@ -55,37 +57,34 @@ void inserirElemento(FILA* f, REGISTRO reg){
     }
     f->fim = novo;
 }
-
+ 
 PONT buscaSequencialNaoOrd(FILA* l, int ch, PONT* ant){
-
+ 
     *ant = NULL;
     PONT atual = l->inicio;
     while ((atual != NULL) && (atual->reg.dificuldade>ch)) {
     *ant = atual;
     atual = atual->prox;
     }
-    if ((atual != NULL) && (atual->reg.dificuldade == ch)) return atual;
-    return NULL;
+    
     }
-
+ 
 PONT buscaSequencialOrd(FILA* l, int ch, PONT* ant){
-
+ 
     *ant = NULL;
     PONT atual = l->inicio;
     while ((atual != NULL) && (atual->reg.dificuldade<ch)) {
     *ant = atual;
     atual = atual->prox;
     }
-    if ((atual != NULL) && (atual->reg.dificuldade == ch)) return atual;
-    return NULL;
+    
     }
-
+ 
 bool inserirElemFilaord(FILA* l, REGISTRO reg) {
-
+ 
     int ch = reg.dificuldade;
     PONT ant, i;
     i = buscaSequencialOrd(l,ch,&ant);
-    if (i != NULL) return false;
     i = (PONT) malloc(sizeof(ELEMENTO));
     i->reg = reg;
     if (ant == NULL) {
@@ -97,13 +96,12 @@ bool inserirElemFilaord(FILA* l, REGISTRO reg) {
     }
     return true;
 }
-
+ 
 bool inserirElemFiladec(FILA* l, REGISTRO reg) {
-
+ 
     int ch = reg.dificuldade;
     PONT ant, i;
     i = buscaSequencialNaoOrd(l,ch,&ant);
-    if (i != NULL) return false;
     i = (PONT) malloc(sizeof(ELEMENTO));
     i->reg = reg;
     if (ant == NULL) {
@@ -115,9 +113,9 @@ bool inserirElemFiladec(FILA* l, REGISTRO reg) {
     }
     return true;
 }
-
+ 
 void excluirElemento(FILA* f){
-
+ 
     if(f->inicio == NULL){
         printf("fila vazia\n");
     }
@@ -126,10 +124,9 @@ void excluirElemento(FILA* f){
     free(apagar);
     if(f->inicio == NULL) f->fim = NULL;
 }
-
-
+ 
 void reinicializarFila(FILA* f) {
-
+ 
     PONT end = f->inicio;
     while (end != NULL) {
         PONT apagar = end;
@@ -139,7 +136,7 @@ void reinicializarFila(FILA* f) {
     f->inicio = NULL;
     f->fim = NULL;
 }
-
+ 
 int contadorQuestoes(FILA* f, int tempo, int* pontuacaototal) {
     
     PONT end = f->inicio;
@@ -155,19 +152,20 @@ int contadorQuestoes(FILA* f, int tempo, int* pontuacaototal) {
    
     return cont;
 }
-
-
+ 
+////////////////////  main 
+ 
 int main(){
-
+ 
     FILA f1, f2, f3;
     iniciarFila(&f1);
     iniciarFila(&f2);
     iniciarFila(&f3);
-
+ 
     int teste, n, i, j, tempo, questoes;
     scanf("%d", &n);
     for(i = 0; i < n; i++){
-
+ 
         
         scanf("%d %d", &tempo, &questoes);
         for(j = 0; j < questoes; j++){
@@ -177,15 +175,15 @@ int main(){
             inserirElemFilaord(&f2, reg);
             inserirElemFiladec(&f3, reg);
         }
-        
+
         int cont1 = 0, cont2 = 0, cont3 = 0, pontuacao1 = 0, pontuacao2 = 0, pontuacao3 = 0;
             cont1 = contadorQuestoes(&f1, tempo, &pontuacao1);
             cont2 = contadorQuestoes(&f2, tempo, &pontuacao2);
             cont3 = contadorQuestoes(&f3, tempo, &pontuacao3);
-            printf("%d %d %d\n", cont1, cont2, cont3);
-
+            //printf("%d %d %d\n", cont1, cont2, cont3);
+ 
             if(cont1 > cont2 && cont1 > cont3){
-                printf("Jack %d %d\n", cont2, pontuacao2);
+                printf("Jack %d %d\n", cont1, pontuacao1);
             }else if(cont2 > cont1 && cont2 > cont3){
                 printf("Jack %d %d\n", cont2, pontuacao2);
             }else if(cont3 > cont1 && cont3 > cont2){
@@ -199,13 +197,10 @@ int main(){
                     printf("Jack %d %d\n", cont2, pontuacao2);
                 }else if(pontuacao3 < pontuacao1 && pontuacao3< pontuacao2){
                     printf("Jade %d %d\n", cont3, pontuacao3);
+                }else{
+                    printf("Jack %d %d\n", cont2, pontuacao2);
                 }
             }
-            
-            
-            
-            
-            
             else if(cont1 == cont2){
                 if(pontuacao1 < pontuacao2){
                     printf("John %d %d\n", cont1, pontuacao1);
@@ -226,9 +221,7 @@ int main(){
                 }else{
                     printf("Jade %d %d\n", cont3, pontuacao3);
                 }
-            }
-
-            
+            }   
     }
     return 0;
 }

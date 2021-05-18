@@ -3,36 +3,36 @@
 #include <string.h>
 #include <malloc.h>
 #include <ctype.h>
-
+ 
 #define true 1
 #define false 0
-
+ 
 typedef int bool;
-
+ 
 typedef struct{
     char nome[35];
     int ficha;
 }REGISTRO;
-
+ 
 typedef struct aux{
     REGISTRO reg;
     struct aux* prox;
 }ELEMENTO;
-
+ 
 typedef ELEMENTO* PONT;
-
+ 
 typedef struct{
     PONT inicio;
     PONT fim;
 }FILA;
-
+ 
 void iniciarFila(FILA* f){
     f->inicio = NULL;
     f->fim = NULL;
 }
-
+ 
 int tamanhoFila(FILA* f){
-
+ 
     PONT end = f->inicio;
     int tam = 0;
     while(end !=  NULL){
@@ -41,9 +41,9 @@ int tamanhoFila(FILA* f){
     }
     return tam;
 }
-
+ 
 void exibirFila(FILA* f){
-
+ 
     PONT end = f->inicio;
     printf("Fila : \" ");
     while(end != NULL){
@@ -52,14 +52,14 @@ void exibirFila(FILA* f){
     } 
     printf("\"\n");
 }
-
+ 
 void inserirElemento(FILA* f, REGISTRO reg){
-
+ 
     PONT novo;
     novo = (PONT) malloc(sizeof(ELEMENTO));
     novo->reg = reg;
     novo->prox = NULL;
-
+ 
     if(f->inicio == NULL){
         f->inicio = novo;
     }else{
@@ -67,9 +67,9 @@ void inserirElemento(FILA* f, REGISTRO reg){
     }
     f->fim = novo;
 }
-
+ 
 PONT buscaSequencialExc(FILA* f, int pos, PONT* ant){
-
+ 
     *ant = NULL;
     PONT atual = f->inicio;
     int i = 0;
@@ -83,7 +83,7 @@ PONT buscaSequencialExc(FILA* f, int pos, PONT* ant){
     }
     
 int excluirElemento(FILA* f, int pos) {
-
+ 
     PONT ant, i;
     i = buscaSequencialExc(f, pos, &ant);
     if (i == NULL) return false;
@@ -93,9 +93,9 @@ int excluirElemento(FILA* f, int pos) {
     free(i);
     return proFicha;
 }
-
+ 
 int buscaSequencial(FILA* f, int ficha) {
-
+ 
     PONT pos = f->inicio;
     int posicao = 0;
     while (pos != NULL) {
@@ -107,9 +107,9 @@ int buscaSequencial(FILA* f, int ficha) {
     }
     return -1;
 }
-
+ 
 PONT buscaSequencial2(FILA* f, int posicao) {
-
+ 
     PONT pos = f->inicio;
     int atual = 0;
     while (pos != NULL) {
@@ -121,12 +121,12 @@ PONT buscaSequencial2(FILA* f, int posicao) {
     }
     return NULL;
 }
-
+ 
 void vencedor(FILA* f, int n){
-
+ 
     PONT end = f->inicio;
     PONT fim = f->inicio;
-
+ 
     while(fim->prox != NULL){
         int ficha = end->reg.ficha;
         int i = 0;
@@ -173,15 +173,15 @@ void vencedor(FILA* f, int n){
     }
     printf("%s\n", fim->reg.nome);
 }
-
-
+ 
+ 
 int main(){
-
+ 
     int num, i;
     FILA f;
     iniciarFila(&f);
     scanf("%d", &num);
-
+ 
     for(i = 0; i < num; i++){
         REGISTRO reg;
         scanf("%s %d", &reg.nome, &reg.ficha);
